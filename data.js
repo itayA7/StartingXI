@@ -2047,33 +2047,5 @@
     'Crvena Zvezda': 'Red Star Belgrade'
   };
 
-  /**
-   * Country each club plays its league football in (same codes as player nationality).
-   * Used to tell the player "right country!" after a wrong club guess.
-   * Clubs missing here simply never get that extra hint.
-   */
-  const clubCountries = {
-    'AC Milan': 'IT', 'Inter': 'IT', 'Juventus': 'IT', 'Roma': 'IT', 'Lazio': 'IT', 'Napoli': 'IT',
-    'Fiorentina': 'IT', 'Sampdoria': 'IT', 'Parma': 'IT',
-    'Real Madrid': 'ES', 'Barcelona': 'ES', 'Atlético Madrid': 'ES', 'Valencia': 'ES', 'Sevilla': 'ES',
-    'Villarreal': 'ES', 'Deportivo La Coruña': 'ES', 'Real Sociedad': 'ES', 'Athletic Bilbao': 'ES',
-    'Bayern Munich': 'DE', 'Borussia Dortmund': 'DE', 'Hamburger SV': 'DE', 'Bayer Leverkusen': 'DE',
-    'Borussia Mönchengladbach': 'DE', 'Schalke 04': 'DE', 'Werder Bremen': 'DE', 'Eintracht Frankfurt': 'DE',
-    'RB Leipzig': 'DE', 'VfB Stuttgart': 'DE',
-    'Liverpool': 'ENG', 'Manchester United': 'ENG', 'Manchester City': 'ENG', 'Chelsea': 'ENG', 'Arsenal': 'ENG',
-    'Tottenham Hotspur': 'ENG', 'Nottingham Forest': 'ENG', 'Aston Villa': 'ENG', 'Leeds United': 'ENG',
-    'Everton': 'ENG', 'Newcastle United': 'ENG', 'Leicester City': 'ENG', 'Ipswich Town': 'ENG',
-    'Wolverhampton Wanderers': 'ENG',
-    'Celtic': 'SCO', 'Rangers': 'SCO',
-    'Marseille': 'FR', 'Paris Saint-Germain': 'FR', 'Monaco': 'FR', 'Lyon': 'FR', 'Saint-Étienne': 'FR',
-    'Stade de Reims': 'FR', 'Nantes': 'FR', 'Bordeaux': 'FR',
-    'Ajax': 'NL', 'Feyenoord': 'NL', 'PSV Eindhoven': 'NL',
-    'Benfica': 'PT', 'Porto': 'PT', 'Sporting CP': 'PT',
-    'Anderlecht': 'BE', 'Club Brugge': 'BE', 'Basel': 'CH', 'Malmö FF': 'SE',
-    'Steaua București': 'RO', 'Red Star Belgrade': 'RS', 'Partizan': 'RS',
-    'Dinamo Zagreb': 'HR', 'Hajduk Split': 'HR', 'Dynamo Kyiv': 'UA', 'Shakhtar Donetsk': 'UA',
-    'Spartak Moscow': 'RU', 'Galatasaray': 'TR', 'Fenerbahçe': 'TR', 'Olympiacos': 'GR', 'Panathinaikos': 'GR'
-  };
-
-  window.STARTING_XI_DATA = { teams, decoyClubs, clubAliases, famousClubs, clubCountries, YOUTH };
+  window.STARTING_XI_DATA = { teams, decoyClubs, clubAliases, famousClubs, YOUTH };
 })();

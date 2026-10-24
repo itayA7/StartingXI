@@ -106,9 +106,6 @@
 
   /** Team pool filter options (Settings). */
   const FAMOUS_CLUBS = new Set(RAW.famousClubs || []);
-  const CLUB_COUNTRY = RAW.clubCountries || {};
-  /** True when a wrong guess is at least from the same football country as the answer. */
-  const sameCountry = (a, b) => !!CLUB_COUNTRY[a] && CLUB_COUNTRY[a] === CLUB_COUNTRY[b];
   const isSemi = t => /^semi/i.test(t.competitionStage || '');
   const isRunnerUp = t => !isSemi(t) && (/runners?-up/i.test(t.competitionStage || '') || /^Lost/.test(t.result || ''));
   const POOLS = {
@@ -1138,8 +1135,7 @@
     const r = state.round;
     if (!r) return;
     r.guesses.forEach(g => {
-      const li = el('li', { class: g.correct ? 'right' : g.near ? 'near' : 'wrong', title: g.near ? 'Right country' : '' }, [`${g.correct ? '✓' : '✗'} ${g.club}`]);
-      if (g.near) li.append(' ', Flag.make(CLUB_COUNTRY[g.club], 'flag-mini'));
+      const li = el('li', { class: g.correct ? 'right' : 'wrong' }, [`${g.correct ? '✓' : '✗'} ${g.club}`]);
       els.history.append(li);
     });
   }
@@ -1367,8 +1363,7 @@
       return;
     }
     const correct = normalize(club) === normalize(r.team.club);
-    const near = !correct && sameCountry(club, r.team.club);
-    r.guesses.push({ club, correct, near });
+    r.guesses.push({ club, correct });
     els.clubInput.value = '';
     closeCombo();
 
@@ -1389,8 +1384,7 @@
       if (left <= 0) {
         endRound(false);
       } else {
-        const nearText = near ? ` But right country (${countryLabel(CLUB_COUNTRY[club])})!` : '';
-        setFeedback(left === 1 ? `❌ Not ${club}.${nearText} Last guess — maybe take a hint?` : `❌ Not ${club}.${nearText} ${plural(left, 'guess')} left.`, near ? 'warn' : 'bad');
+        setFeedback(left === 1 ? `❌ Not ${club}. Last guess — maybe take a hint?` : `❌ Not ${club}. ${plural(left, 'guess')} left.`, 'bad');
         renderSteps();
         els.clubInput.focus();
       }
@@ -1504,15 +1498,20 @@
     r.points = won ? Math.round(Math.max(0, base - hintCost(r) - wrongCount(r) * SCORING.wrongGuess) * r.mult * r.teamMult) : 0;
 
     // ── stats ──
+    // A round only counts as a WIN (streak, win %, team discovered) when the club is right
+    // AND the season is Perfect or Close (within 2 seasons). A wrong or skipped season still
+    // keeps its points, but resets the streak.
+    const tier = won ? seasonVerdict(r).tier : null;
+    r.success = tier === 'exact' || tier === 'close';
     const st = store.stats;
     st.played++;
     st.hints += hintCount(r);
     st.points += r.points;
-    if (won) {
+    if (r.success) {
       st.wins++;
       if (!store.discovered.includes(r.team.id)) store.discovered.push(r.team.id);
     }
-    st.streak = won ? st.streak + 1 : 0;
+    st.streak = r.success ? st.streak + 1 : 0;
     st.bestStreak = Math.max(st.bestStreak, st.streak);
     state.session.score += r.points;
     state.session.rounds++;
@@ -1733,7 +1732,7 @@
     return `${location.origin}${location.pathname.replace(/index\.html$/, '')}`;
   }
 
-  const COLORS = { right: '#3ddc84', near: '#ffb547', wrong: '#3a4459', bad: '#ff5d73', skip: '#7a869e' };
+  const COLORS = { right: '#3ddc84', wrong: '#3a4459', bad: '#ff5d73', skip: '#7a869e' };
 
   /** The only text that is shared — every stat lives on the image card. */
   const challengeText = url => (url ? `Can you beat me? ${url}` : 'Can you beat me?');

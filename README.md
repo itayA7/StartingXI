@@ -2,7 +2,7 @@
 
 **Can you name the legendary Champions League team from 11 shirts of clues?**
 
-### ▶️ [Play now](https://itaya7.github.io/Starting11-Europe/)
+### ▶️ [Play now](https://itaya7.github.io/StartingXI/)
 
 Free, no sign-up, no ads. Works on phone and desktop, even offline.
 
@@ -11,7 +11,7 @@ Free, no sign-up, no ads. Works on phone and desktop, even offline.
 ## How to play
 1. A famous European Cup / Champions League line-up appears on the pitch, with every name hidden.
 2. Each shirt shows a clue: a **flag**, the player's **age**, **shirt number**, **career goals**, **assists**, **international caps** or **previous club**. Tap a shirt to read it in full.
-3. **Guess the club.** You get three tries. A yellow guess means you picked the right country.
+3. **Guess the club.** You get three tries.
 4. **Guess the season.** The closer you get, the more points you score.
 5. Stuck? Hints can reveal every flag, every shirt number, a player's name, the manager, the decade or the result, but each one costs points.
 

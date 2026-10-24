@@ -15,11 +15,12 @@
   <meta name="theme-color" content="#070b14">
   <meta name="color-scheme" content="dark">
 
-  <!-- Social previews (og:image should be an absolute URL once deployed — see README) -->
+  <!-- Social previews (absolute URLs: chat apps read them without running the page) -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="Starting XI – European Nights Edition">
   <meta property="og:description" content="Can you name the legendary Champions League team from 11 shirts of clues?">
-  <meta property="og:image" content="og-image.png">
+  <meta property="og:url" content="https://itaya7.github.io/StartingXI/">
+  <meta property="og:image" content="https://itaya7.github.io/StartingXI/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Starting XI – a football pitch with eleven mystery shirts">
@@ -30,7 +31,7 @@
   <link rel="icon" href="icon-192.png" type="image/png" sizes="192x192">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="stylesheet" href="style.css?v=20261024j">
+  <link rel="stylesheet" href="style.css?v=20261024l">
 </head>
 <body>
   <noscript><p class="noscript">Starting XI needs JavaScript to run. Please enable it and reload the page.</p></noscript>
@@ -201,7 +202,7 @@
       <ol class="help-list">
         <li>A legendary European Cup / Champions League line-up appears on the pitch — names hidden.</li>
         <li>Every shirt shows a real clue that suits the player's position: <b>flag</b>, <b>age</b>, <b>shirt number</b>, <b>career goals</b>, <b>assists</b>, <b>caps</b> or <b>previous club</b>. Tap a shirt to read it in full.</li>
-        <li><b>Step 1:</b> guess the club (3 tries; a <span class="text-near">yellow</span> wrong guess means right country). <b>Step 2:</b> pick the season — the closer, the more points.</li>
+        <li><b>Step 1:</b> guess the club (3 tries). <b>Step 2:</b> pick the season — the closer, the more points.</li>
         <li>Stuck? <b>Team-wide clues</b> add one stat to every shirt (all flags, all shirt numbers…). <b>Bigger hints</b> reveal the decade, a player, the manager or the result. All hints cost points.</li>
       </ol>
       <div class="help-modes">
@@ -304,7 +305,7 @@
   <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
   <canvas class="confetti" id="confetti" aria-hidden="true"></canvas>
 
-  <script src="data.js?v=20261024j"></script>
-  <script src="game.js?v=20261024j"></script>
+  <script src="data.js?v=20261024l"></script>
+  <script src="game.js?v=20261024l"></script>
 </body>
 </html>

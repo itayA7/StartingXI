@@ -584,7 +584,6 @@ pre.share-box { font-family: var(--font-body); }
 @media (prefers-reduced-motion: reduce) { .led-track { animation: none; } }
 
 .share-image { display: block; width: 100%; max-width: 300px; aspect-ratio: 1080 / 1350; margin: 0 auto 12px; border-radius: 12px; background: #0b1222; box-shadow: 0 8px 24px rgba(0, 0, 0, .5); }
-.guess-history li.near { background: rgba(255, 181, 71, .16); color: #ffd79a; border: 1px solid rgba(255, 181, 71, .45); display: inline-flex; align-items: center; gap: 2px; }
 
 /* ───────────── Phone: guess bar docks to the bottom while you study the pitch ───────────── */
 .dock-feedback { display: none; }
@@ -603,7 +602,6 @@ pre.share-box { font-family: var(--font-body); }
 .guess-form.docked .dock-feedback { order: -1; }
 .panel.has-dock { backdrop-filter: none; }
 
-.text-near { color: #ffd79a; font-weight: 700; }
 .noscript { position: relative; z-index: 5; max-width: 560px; margin: 24px auto; padding: 16px; border-radius: 12px; background: #fff3c4; color: #1a1406; font-weight: 700; text-align: center; }
 
 /* ───────────── 404 page ───────────── */

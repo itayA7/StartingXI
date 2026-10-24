@@ -29,7 +29,6 @@ for (const t of D.teams) {
   if (r.some(n => !Number.isInteger(n) || n < 1) || r.reduce((a, b) => a + b, 0) !== 10) errors.push(`${where}: formation "${t.formation}" must add up to 10 outfield players`);
   if (!RATINGS.has(t.difficulty)) errors.push(`${where}: difficulty must be easy, medium or hard`);
   if (!t.kitColors || !/^#[0-9a-f]{6}$/i.test(t.kitColors.primary || '')) errors.push(`${where}: kitColors.primary must be a #rrggbb colour`);
-  if (!D.clubCountries[t.club]) warn.push(`${where}: no clubCountries entry for "${t.club}" (no "right country" hint)`);
   if (!Array.isArray(t.players) || t.players.length !== 11) { errors.push(`${where}: needs exactly 11 players`); continue; }
   if (t.players[0].position !== 'GK') errors.push(`${where}: first player must be the goalkeeper`);
   t.players.forEach((p, i) => {
