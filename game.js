@@ -796,7 +796,7 @@
   const state = {
     mode: 'classic',
     round: null,
-    session: { score: 0, rounds: 0, seen: new Set() },
+    session: { rounds: 0, seen: new Set() },
     ta: { active: false, finished: false, timeLeft: TIME_ATTACK_SECONDS, score: 0, answered: 0, timer: null, seen: new Set(), log: [] }
   };
 
@@ -1001,7 +1001,7 @@
       const lines = [[p.position, isPresent(p.shirtNumber) ? `#${p.shirtNumber}` : '—']];
       if (isPresent(p.nationality)) lines.push(['Nation', flagLine(p)]);
       if (isPresent(p.age)) lines.push(['Age in final', String(p.age)]);
-      if (isPresent(p.careerGoals)) lines.push(['Career goals', `≈ ${p.careerGoals}`]);
+      if (isPresent(p.careerGoals)) lines.push(['Career club goals', `≈ ${p.careerGoals}`]);
       if (isPresent(p.careerAssists)) lines.push(['Career assists', `≈ ${p.careerAssists}`]);
       if (isPresent(p.caps)) lines.push(['Intl caps', String(p.caps)]);
       if (isPresent(p.previousClub)) lines.push(['Joined from', p.previousClub]);
@@ -1086,7 +1086,7 @@
     s.innerHTML = '';
     const r = state.round;
     if (state.mode === 'classic') {
-      s.append(chip('Score', String(state.session.score)), chip('Streak', `${store.stats.streak}🔥`),
+      s.append(chip('Score', String(store.stats.points)), chip('Streak', `${store.stats.streak}🔥`),
         chip('Guesses', ballsNode(r)), chip('Clues', `${DIFFICULTY[store.settings.difficulty].label} ×${DIFFICULTY[store.settings.difficulty].mult}`));
     } else {
       const ta = state.ta;
@@ -1513,7 +1513,6 @@
     }
     st.streak = r.success ? st.streak + 1 : 0;
     st.bestStreak = Math.max(st.bestStreak, st.streak);
-    state.session.score += r.points;
     state.session.rounds++;
     saveStore();
 
@@ -2319,7 +2318,7 @@
     syncSettingsUI();
 
     if (!TEAMS.length) {
-      setFeedback('No valid teams found in data.js.', 'bad');
+      setFeedback("Couldn't load the teams — please refresh the page.", 'bad');
       return;
     }
     setMode('classic');

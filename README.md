@@ -2,9 +2,9 @@
 
 **Can you name the legendary Champions League team from 11 shirts of clues?**
 
-### ▶️ [Play now](https://itaya7.github.io/StartingXI/)
+### ▶️ [Play now](https://starting-xi.online/)
 
-Free, no sign-up, no ads. Works on phone and desktop, even offline.
+Free, no sign-up. Works on phone and desktop, even offline.
 
 ![Starting XI – a football pitch with eleven mystery shirts](og-image.png)
 
@@ -29,7 +29,7 @@ A perfect round (right club *and* right season) gets the crowd cheering. 🎉
 - **Statistics and collection:** track your streaks and points and every team you've discovered.
 - **Share your results:** share a result card of your Time Attack run or your overall stats to WhatsApp, X or Facebook.
 - **Install it:** add it to your home screen and play like an app, even without internet.
-- **Private by design:** no accounts, cookies, trackers or ads. Your progress stays on your own device.
+- **Private by design:** no accounts, cookies or trackers. Your progress stays on your own device.
 
 ## About the data
 Line-ups come from Wikipedia match pages and published match reports. Ages, caps and goals come from each player's Wikipedia page, and players still playing were updated in October 2026. Career assists and a few older figures are estimates, because they were never officially recorded.
