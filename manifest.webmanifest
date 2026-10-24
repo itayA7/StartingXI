@@ -1,0 +1,17 @@
+{
+  "name": "Starting XI – European Nights Edition",
+  "short_name": "Starting XI",
+  "description": "Guess the legendary Champions League team from the clues on each player's shirt.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#060a13",
+  "theme_color": "#070b14",
+  "categories": ["games", "sports", "entertainment"],
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" },
+    { "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

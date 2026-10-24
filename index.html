@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <!--
+    Security policy (works on any static host, including GitHub Pages which can't set headers).
+    Everything is served from this site; no third-party scripts, fonts, trackers or API calls.
+    data:/blob: images are the flag/share-card canvases; there are no inline scripts or style attributes.
+  -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; manifest-src 'self'; worker-src 'self'; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Starting XI – European Nights Edition</title>
+  <meta name="description" content="Guess the legendary European Cup / Champions League team from the clues on each player's shirt. Free football trivia game — no sign-up, no ads, works offline.">
+  <meta name="theme-color" content="#070b14">
+  <meta name="color-scheme" content="dark">
+
+  <!-- Social previews (og:image should be an absolute URL once deployed — see README) -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Starting XI – European Nights Edition">
+  <meta property="og:description" content="Can you name the legendary Champions League team from 11 shirts of clues?">
+  <meta property="og:image" content="og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Starting XI – a football pitch with eleven mystery shirts">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Icons & install as an app -->
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="icon-192.png" type="image/png" sizes="192x192">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="style.css?v=20261024j">
+</head>
+<body>
+  <noscript><p class="noscript">Starting XI needs JavaScript to run. Please enable it and reload the page.</p></noscript>
+  <!-- Stadium atmosphere (purely decorative) -->
+  <div class="stadium" aria-hidden="true">
+    <div class="floodlight floodlight-left"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    <div class="floodlight floodlight-right"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+  </div>
+
+  <!-- Shared SVG definitions (shirt clip path used by every player card) -->
+  <svg class="svg-defs" width="0" height="0" aria-hidden="true" focusable="false">
+    <defs>
+      <clipPath id="shirt-clip" clipPathUnits="userSpaceOnUse">
+        <path d="M33 4 L42 1 Q50 9 58 1 L67 4 L96 20 L87 40 L76 34 L76 90 L24 90 L24 34 L13 40 L4 20 Z"/>
+      </clipPath>
+    </defs>
+  </svg>
+
+  <a class="skip-link" href="#guess-area">Skip to guess</a>
+
+  <header class="site-header">
+    <div class="header-actions header-actions-left">
+      <button class="icon-btn" id="btn-help" type="button" aria-label="How to play" title="How to play">?</button>
+      <button class="icon-btn" id="btn-stats" type="button" aria-label="Statistics" title="Statistics">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <h1 class="logo">
+      <!-- Original logo: an arc of eleven stars over the wordmark -->
+      <svg class="logo-stars" viewBox="0 0 220 40" aria-hidden="true">
+        <g id="logo-star-arc"></g>
+      </svg>
+      <span class="logo-word">Starting <span class="logo-xi">XI</span></span>
+      <span class="logo-sub">European Nights Edition</span>
+    </h1>
+
+    <div class="header-actions header-actions-right">
+      <button class="icon-btn" id="btn-sound" type="button" aria-label="Mute sound" aria-pressed="false" title="Sound on/off">🔊</button>
+      <button class="icon-btn" id="btn-settings" type="button" aria-label="Settings" title="Settings">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <nav class="mode-tabs" role="tablist" aria-label="Game mode">
+    <button role="tab" type="button" class="mode-tab" id="tab-classic" data-mode="classic" aria-selected="true">Classic</button>
+    <button role="tab" type="button" class="mode-tab" id="tab-timeattack" data-mode="timeattack" aria-selected="false">Time Attack</button>
+  </nav>
+
+  <main class="layout" id="main">
+    <!-- ───────────── Pitch ───────────── -->
+    <section class="pitch-column" aria-label="Pitch">
+      <div class="status-bar" id="status-bar" aria-live="polite"></div>
+
+      <div class="pitch-frame">
+        <div class="led-board" aria-hidden="true"><div class="led-track"><span>★ STARTING XI ★ EUROPEAN NIGHTS ★ WHO ARE THEY? ★ NAME THE CLUB ★ NAME THE SEASON ★ </span><span>★ STARTING XI ★ EUROPEAN NIGHTS ★ WHO ARE THEY? ★ NAME THE CLUB ★ NAME THE SEASON ★ </span></div></div>
+        <div class="pitch" id="pitch">
+          <svg class="pitch-lines" viewBox="0 0 68 100" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <pattern id="net" width="1" height="1" patternUnits="userSpaceOnUse">
+                <path d="M0 0 L1 1 M1 0 L0 1" stroke="rgba(255,255,255,.35)" stroke-width=".12"/>
+              </pattern>
+            </defs>
+            <!-- goals with nets -->
+            <rect x="29.5" y=".4" width="9" height="2.6" fill="url(#net)" stroke="rgba(255,255,255,.85)" stroke-width=".35"/>
+            <rect x="29.5" y="97" width="9" height="2.6" fill="url(#net)" stroke="rgba(255,255,255,.85)" stroke-width=".35"/>
+            <g fill="none" stroke="rgba(255,255,255,.8)" stroke-width=".45">
+              <rect x="2" y="3" width="64" height="94"/>
+              <line x1="2" y1="50" x2="66" y2="50"/>
+              <circle cx="34" cy="50" r="8.5"/>
+              <rect x="14" y="3" width="40" height="15"/>
+              <rect x="24.5" y="3" width="19" height="5.5"/>
+              <path d="M26.5 18 A8.5 8.5 0 0 0 41.5 18"/>
+              <rect x="14" y="82" width="40" height="15"/>
+              <rect x="24.5" y="91.5" width="19" height="5.5"/>
+              <path d="M26.5 82 A8.5 8.5 0 0 1 41.5 82"/>
+              <path d="M2 5 A2 2 0 0 0 4 3 M64 3 A2 2 0 0 0 66 5 M2 95 A2 2 0 0 1 4 97 M64 97 A2 2 0 0 1 66 95"/>
+            </g>
+            <g fill="rgba(255,255,255,.85)">
+              <circle cx="34" cy="50" r=".6"/>
+              <circle cx="34" cy="13" r=".55"/>
+              <circle cx="34" cy="87" r=".55"/>
+            </g>
+            <!-- original centre-circle star motif -->
+            <polygon class="centre-star" points="34,44.6 35.3,48.3 39.2,48.3 36.1,50.6 37.2,54.3 34,52.1 30.8,54.3 31.9,50.6 28.8,48.3 32.7,48.3"/>
+            <!-- corner flags -->
+            <g class="corner-flags">
+              <line x1="2" y1="3" x2="2" y2="0.6"/><polygon points="2,0.6 3.6,1.2 2,1.8"/>
+              <line x1="66" y1="3" x2="66" y2="0.6"/><polygon points="66,0.6 67.6,1.2 66,1.8"/>
+              <line x1="2" y1="97" x2="2" y2="99.4"/><polygon points="2,98.2 3.6,98.8 2,99.4"/>
+              <line x1="66" y1="97" x2="66" y2="99.4"/><polygon points="66,98.2 67.6,98.8 66,99.4"/>
+            </g>
+          </svg>
+          <div class="formation-tag" id="formation-tag" aria-live="polite"></div>
+          <div class="attack-arrow" aria-hidden="true">ATTACK ▲</div>
+          <ul class="players" id="players" aria-label="Starting eleven"></ul>
+          <div class="pitch-overlay" id="pitch-overlay" hidden></div>
+        </div>
+        <div class="led-board led-bottom" aria-hidden="true"><div class="led-track reverse"><span>★ TAP A SHIRT FOR DETAILS ★ HINTS COST POINTS ★ HARD CLUES SCORE ×1.5 ★ </span><span>★ TAP A SHIRT FOR DETAILS ★ HINTS COST POINTS ★ HARD CLUES SCORE ×1.5 ★ </span></div></div>
+      </div>
+    </section>
+
+    <!-- ───────────── Controls ───────────── -->
+    <section class="control-column" id="guess-area" aria-label="Your guess">
+      <div class="panel" id="play-panel">
+        <!-- Step 1: club -->
+        <div class="club-slot" id="club-slot">
+        <form class="guess-form" id="club-form" autocomplete="off" novalidate>
+          <label class="step-label" for="club-input"><span class="step-num">1</span> Which club is this?</label>
+          <div class="guess-row">
+            <div class="combo" id="combo">
+              <input id="club-input" class="text-input" type="text" role="combobox"
+                     aria-autocomplete="list" aria-expanded="false" aria-controls="club-list"
+                     placeholder="Start typing a club…" spellcheck="false" autocapitalize="off">
+              <ul id="club-list" class="combo-list" role="listbox" aria-label="Club suggestions" hidden></ul>
+            </div>
+            <button class="btn btn-primary" id="club-submit" type="submit">Guess</button>
+          </div>
+          <ul class="guess-history" id="guess-history" aria-label="Previous guesses"></ul>
+          <p class="dock-feedback" id="dock-feedback" aria-hidden="true"></p>
+        </form>
+        </div>
+
+        <!-- Step 2: season -->
+        <form class="guess-form" id="season-form" hidden novalidate>
+          <label class="step-label" for="season-select"><span class="step-num">2</span> Which season?</label>
+          <div class="guess-row">
+            <button class="btn btn-ghost btn-square" id="season-minus" type="button" aria-label="Previous season">−</button>
+            <select id="season-select" class="text-input select-input"></select>
+            <button class="btn btn-ghost btn-square" id="season-plus" type="button" aria-label="Next season">+</button>
+            <button class="btn btn-primary" id="season-submit" type="submit">Lock in</button>
+          </div>
+          <p class="hint-text">Exact season = full points. Closer = more points.</p>
+        </form>
+
+        <p class="feedback" id="feedback" role="status" aria-live="polite"></p>
+
+        <!-- Hints -->
+        <div class="hints" id="hints">
+          <h2 class="panel-title">Hints <span class="muted">(cost points)</span></h2>
+          <div class="hint-buttons" id="hint-buttons"></div>
+          <ul class="hint-log" id="hint-log" aria-live="polite"></ul>
+        </div>
+
+        <div class="round-actions" id="round-actions">
+        </div>
+      </div>
+
+      <!-- Reveal / results -->
+      <div class="panel reveal" id="reveal" hidden tabindex="-1" aria-live="polite"></div>
+
+      <!-- Time attack intro / results -->
+      <div class="panel ta-panel" id="ta-panel" hidden></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Fan-made trivia game. Not affiliated with UEFA or any club. Generic kits only — no crests or logos.
+      Stats are approximate; see <code>data.js</code>.</p>
+    <p>Privacy: no accounts, cookies, ads or tracking. Your stats and settings are saved only in this browser.</p>
+  </footer>
+
+  <!-- ───────────── Modals ───────────── -->
+  <dialog class="modal" id="modal-help" aria-labelledby="help-title">
+    <div class="modal-body">
+      <h2 id="help-title">How to play</h2>
+      <ol class="help-list">
+        <li>A legendary European Cup / Champions League line-up appears on the pitch — names hidden.</li>
+        <li>Every shirt shows a real clue that suits the player's position: <b>flag</b>, <b>age</b>, <b>shirt number</b>, <b>career goals</b>, <b>assists</b>, <b>caps</b> or <b>previous club</b>. Tap a shirt to read it in full.</li>
+        <li><b>Step 1:</b> guess the club (3 tries; a <span class="text-near">yellow</span> wrong guess means right country). <b>Step 2:</b> pick the season — the closer, the more points.</li>
+        <li>Stuck? <b>Team-wide clues</b> add one stat to every shirt (all flags, all shirt numbers…). <b>Bigger hints</b> reveal the decade, a player, the manager or the result. All hints cost points.</li>
+      </ol>
+      <div class="help-modes">
+        <p><b>Classic</b> — endless teams, build a streak.</p>
+        <p><b>Time Attack</b> — 60 seconds, club only, as many as you can.</p>
+      </div>
+      <p class="muted small">Difficulty (in settings): <b>Easy</b> 2 clues + kit colours (×0.75 points) · <b>Medium</b> 2 clues (×1) · <b>Hard</b> 1 clue (×1.5). Each team's rating also scales points: <b>Easy</b> ×0.8 · <b>Medium</b> ×1 · <b>Hard</b> ×1.3. Settings let you pick decades and a team pool (winners, runner-ups or famous clubs).</p>
+      <div class="modal-actions">
+        <button class="btn btn-primary" type="button" data-close>Kick off!</button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog class="modal" id="modal-stats" aria-labelledby="stats-title">
+    <div class="modal-body">
+      <h2 id="stats-title">Statistics</h2>
+      <div id="stats-content"></div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" type="button" id="btn-reset-stats">Reset stats</button>
+        <button class="btn btn-ghost" type="button" data-close>Close</button>
+        <button class="btn btn-primary" type="button" id="btn-share-stats">Share stats 📤</button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog class="modal" id="modal-settings" aria-labelledby="settings-title">
+    <div class="modal-body">
+      <h2 id="settings-title">Settings</h2>
+      <fieldset class="setting">
+        <legend>Clue difficulty <span class="muted small">(Classic mode)</span></legend>
+        <div class="segmented">
+          <label><input type="radio" name="difficulty" value="easy"> <span>Easy</span></label>
+          <label><input type="radio" name="difficulty" value="medium"> <span>Medium</span></label>
+          <label><input type="radio" name="difficulty" value="hard"> <span>Hard</span></label>
+        </div>
+        <p class="muted small">Easy: 2 clues per shirt + kit colours (points ×0.75). Medium: 2 clues (×1). Hard: 1 clue (×1.5).</p>
+      </fieldset>
+      <fieldset class="setting">
+        <legend>Team pool</legend>
+        <select id="setting-pool" class="text-input select-input">
+          <option value="all">All teams</option>
+          <option value="winners">Winners only</option>
+          <option value="runners">Runner-ups only</option>
+          <option value="famous">Famous clubs only</option>
+        </select>
+      </fieldset>
+      <fieldset class="setting">
+        <legend>Decades <button type="button" class="link-btn" id="decades-all">Select all</button></legend>
+        <div class="decade-filter" id="setting-decades"></div>
+      </fieldset>
+      <fieldset class="setting">
+        <legend>Sound</legend>
+        <label class="switch"><input type="checkbox" id="setting-sound"> <span>Sound effects</span></label>
+      </fieldset>
+      <div class="modal-actions">
+        <button class="btn btn-primary" type="button" data-close>Done</button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog class="modal share-modal" id="modal-share" aria-labelledby="share-title">
+    <div class="modal-body">
+      <div class="share-head">
+        <div>
+          <p class="share-kicker">Challenge your friends</p>
+          <h2 id="share-title">Share your run</h2>
+        </div>
+        <button class="icon-btn share-close" type="button" data-close aria-label="Close">✕</button>
+      </div>
+
+      <div class="share-layout">
+        <figure class="share-figure">
+          <img class="share-image" id="share-image" alt="Your result card">
+          <figcaption>Image card · no spoilers</figcaption>
+        </figure>
+
+        <div class="share-side">
+          <div class="share-stats" id="share-stats" aria-label="Your result"></div>
+
+          <div class="share-message">
+            <span class="share-message-label">Sent with the image</span>
+            <p class="share-link-line" id="share-preview"></p>
+          </div>
+
+          <div class="share-buttons">
+            <button class="btn btn-primary" type="button" id="btn-share-native">Share image 📤</button>
+            <button class="btn btn-ghost" type="button" id="btn-share-download">Save image 🖼️</button>
+          </div>
+          <p class="share-how" id="share-how"></p>
+
+          <div class="share-apps-block">
+            <span class="share-message-label">Or share straight to</span>
+            <div class="share-apps" id="share-apps" aria-label="Share to an app"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <canvas class="confetti" id="confetti" aria-hidden="true"></canvas>
+
+  <script src="data.js?v=20261024j"></script>
+  <script src="game.js?v=20261024j"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+# Local tooling and OS files — not part of the published game
+.claude/
+.DS_Store
+Thumbs.db
+*.log
+
+# Private developer notes (kept on this computer only)
+DEVELOPER-NOTES.md
